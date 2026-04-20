@@ -143,7 +143,7 @@ export default async function DashboardPage() {
                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                       />
                     </svg>
-                    {event._count.rsvps} RSVPs
+                    {event._count?.rsvps || 0} RSVPs
                   </div>
                 </div>
               </div>

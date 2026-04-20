@@ -45,7 +45,7 @@ export default function RSVPButtons({
     }
   }
 
-  async function handleRSVP(status: PrismaRSVPStatus) {
+  async function handleRSVP(status: RSVPStatus) {
     setIsLoading(true);
     try {
       const result = await rsvpToEvent(eventId, status);

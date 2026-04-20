@@ -28,7 +28,7 @@ export default async function EventPage({
 
   let currentRSVP: RSVPStatus | undefined;
   if (session?.user?.id) {
-    const userRSVP = event.rsvps.find(
+    const userRSVP = event.rsvps?.find(
       (rsvp) => rsvp.userId === session.user?.id
     );
     currentRSVP = userRSVP?.status;
@@ -37,11 +37,11 @@ export default async function EventPage({
   const isOwner = session?.user?.id === event.userId;
   const isPast = new Date(event.date) < new Date();
 
-  const goingRSVPs = event.rsvps.filter((rsvp) => rsvp.status == "GOING");
-  const maybeRSVPs = event.rsvps.filter((rsvp) => rsvp.status == "MAYBE");
-  const notGoingRSVPs = event.rsvps.filter(
+  const goingRSVPs = event.rsvps?.filter((rsvp) => rsvp.status == "GOING") || [];
+  const maybeRSVPs = event.rsvps?.filter((rsvp) => rsvp.status == "MAYBE") || [];
+  const notGoingRSVPs = event.rsvps?.filter(
     (rsvp) => rsvp.status == "NOT_GOING"
-  );
+  ) || [];
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -145,7 +145,7 @@ export default async function EventPage({
                 </svg>
 
                 <span className="text-foreground">
-                  {event._count.rsvps} attending / {event.maxAttendees} max
+                  {event._count?.rsvps || 0} attending / {event.maxAttendees} max
                 </span>
               </div>
             )}
@@ -169,7 +169,7 @@ export default async function EventPage({
         </div>
       </div>
 
-      {event.isPublic && event.rsvps.length > 0 && (
+      {event.isPublic && (event.rsvps?.length || 0) > 0 && (
         <div className="card p-8">
           <h2 className="text-2xl font-bold text-foreground mb-6">Attendees</h2>
           <div className="grid md:grid-cols-3 gap-6">
@@ -182,7 +182,7 @@ export default async function EventPage({
                   {goingRSVPs.map((rsvp, key) => (
                     <div key={key} className="flex items-center">
                       <div className="w-2 h-2 bg-green-400 rounded-full mr-3"></div>
-                      <span className="text-foreground">{rsvp.user.name}</span>
+                      <span className="text-foreground">{rsvp.userId}</span>
                     </div>
                   ))}
                 </div>
@@ -198,7 +198,7 @@ export default async function EventPage({
                   {maybeRSVPs.map((rsvp, key) => (
                     <div key={key} className="flex items-center">
                       <div className="w-2 h-2 bg-yellow-400 rounded-full mr-3"></div>
-                      <span className="text-foreground">{rsvp.user.name}</span>
+                      <span className="text-foreground">{rsvp.userId}</span>
                     </div>
                   ))}
                 </div>
@@ -214,7 +214,7 @@ export default async function EventPage({
                   {notGoingRSVPs.map((rsvp, key) => (
                     <div key={key} className="flex items-center">
                       <div className="w-2 h-2 bg-red-400 rounded-full mr-3"></div>
-                      <span className="text-foreground">{rsvp.user.name}</span>
+                      <span className="text-foreground">{rsvp.userId}</span>
                     </div>
                   ))}
                 </div>
